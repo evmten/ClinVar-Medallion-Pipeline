@@ -1,0 +1,8 @@
+ClinicalSignificance_clean,variant_count,pct_of_total
+Uncertain significance,2309658,55.28
+Likely benign,1086957,26.01
+Pathogenic,390035,9.33
+Benign,274968,6.58
+Likely pathogenic,112522,2.69
+Other / Not provided,4092,0.1
+Conflicting interpretations of pathogenicity,132,0.0
