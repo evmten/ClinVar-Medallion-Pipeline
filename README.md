@@ -58,7 +58,7 @@ This is where the real transformation happens:
 | Filter to GRCh38 | Removes the duplicate GRCh37 build (and legacy `na`/`NCBI36`). Drops 4,524,339 rows (50.4%) — without this, every downstream count would be roughly doubled. |
 | Markers → nulls | Converts NCBI's text placeholders (`-`, `na`) into real nulls, so missing-value checks actually work. |
 | Standardise significance | Maps the free-text `ClinicalSignificance` field to 7 canonical categories via a priority-ordered keyword match. |
-| Cast types | `GeneSymbol` → uppercase (so the same gene can't split across casings); `LastEvaluated` → real `date` via a Python UDF that sidesteps a Serverless config lock on Spark's date parser. |
+| Cast types | `GeneSymbol` → uppercase (so the same gene can't split across casings); `LastEvaluated` — Databricks Serverless locks spark.sql.legacy.timeParserPolicy to CORRECTED mode, blocking standard date casting and causing silent UDF failures across executors. Column retained as a cleaned string; null values caught by dq_flag. Documented in Known Limitations. |
 | Flag, don't drop | Adds `dq_flag` / `dq_reason`. Rows failing a quality check are **kept and labelled**, never deleted. |
  
 Result: **4,456,834 rows × 19 columns**, of which **4,177,604 (93.7%) are clean** and **279,230 (6.3%) are flagged**.
